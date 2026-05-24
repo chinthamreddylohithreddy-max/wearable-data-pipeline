@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block title %}Central Surveillance Monitor{% endblock %}
+{% block content %}
+<div class="action-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+    <h2 style="margin:0; color:#1e3a8a;">Central Telemetry Surveillance Station</h2>
+    <button onclick="window.location.reload();" style="background:#fff; color:#0f172a; border:1px solid #cbd5e1; padding:8px 16px; font-size:13px;">Force Sync Telemetry Layer</button>
+</div>
+
+{% if rows %}
+<table style="width: 100%; background: white; border-collapse: collapse; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0;">
+    <thead>
+        <tr style="background:#f8fafc; border-bottom:2px solid #e2e8f0;">
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">ID</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Encounter ID</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Patient Context</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Ward/Room</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Metric</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Value</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Triage Status</th>
+            <th style="padding:14px; font-size:11px; text-transform:uppercase; color:#475569;">Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+        <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:14px;">{{ row.id }}</td>
+            <td style="padding:14px;"><span style="font-family:monospace; background:#e2e8f0; color:#1e293b; padding:4px 6px; border-radius:4px; font-weight:600; font-size:12px;">{{ row.user_id }}</span></td>
+            <td style="padding:14px;"><strong>{{ row.patient_name }}</strong> <span style="color:#64748b; font-size:12px;">({{ row.patient_age }}yo)</span></td>
+            <td style="padding:14px;"><span style="background:#f1f5f9; color:#475569; padding:3px 6px; border-radius:4px; font-size:13px;">{{ row.ward_number }}</span></td>
+            <td style="padding:14px;">{{ labels[row.data_type] if row.data_type in labels else row.data_type }}</td>
+            <td style="padding:14px; font-weight:600;">
+                {% if row.data_type == 'body_temperature' %}
+                    {{ "%.1f"|format(row.metric_value / 10) }} °F
+                {% else %}
+                    {{ row.metric_value }}
+                {% endif %}
+            </td>
+            <td style="padding:14px;">
+                {% if row.acuity_status == 'CRITICAL' %}
+                    <span style="padding:4px 10px; border-radius:12px; font-weight:700; font-size:11px; background:#fee2e2; color:#991b1b;">CRITICAL</span>
+                {% elif row.acuity_status == 'MONITOR' %}
+                    <span style="padding:4px 10px; border-radius:12px; font-weight:700; font-size:11px; background:#fef3c7; color:#92400e;">MONITOR</span>
+                {% else %}
+                    <span style="padding:4px 10px; border-radius:12px; font-weight:700; font-size:11px; background:#dcfce7; color:#166534;">NORMAL</span>
+                {% endif %}
+            </td>
+            <td style="padding:14px; color:#64748b; font-size:12px;">{{ row.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div style="text-align:center; color:#64748b; padding:60px 20px; background:white; border-radius:6px; border:1px solid #e2e8f0;">
+    <h3>No Active Patient Surveillance Feeds</h3>
+    <p>Awaiting ingestion streams from active medical hardware.</p>
+</div>
+{% endif %}
+{% endblock %}

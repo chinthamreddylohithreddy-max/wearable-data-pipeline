@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Telemetry Ingestion Portal{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 550px; margin: 0 auto;">
+    <h2 style="margin:0 0 5px 0; font-size:20px;">Telemetry Ingestion Gateway</h2>
+    <p style="color:var(--text-muted); font-size:13px; margin:0 0 25px 0;">Submit verified edge node metrics directly to the relational central database server.</p>
+    
+    <form action="/submit-web" method="post">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Patient Encounter ID</label>
+                <input type="text" name="user_id" placeholder="e.g., PT-901" required>
+            </div>
+            <div class="form-group">
+                <label>Assigned Ward / Room</label>
+                <input type="text" name="ward_number" placeholder="e.g., Ward 4B-02" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Patient Full Name</label>
+                <input type="text" name="patient_name" placeholder="e.g., John Doe" required>
+            </div>
+            <div class="form-group" style="flex: 0 0 100px;">
+                <label>Age</label>
+                <input type="number" name="patient_age" placeholder="Age" required>
+            </div>
+        </div>
+        <div class="form-group full">
+            <label>Physiological Metric Classification</label>
+            <select name="data_type">
+                <option value="heart_rate">Heart Rate (BPM)</option>
+                <option value="oxygen_saturation">Pulse Oximetry (SpO2 %)</option>
+                <option value="blood_glucose">Blood Glucose (mg/dL)</option>
+                <option value="systolic_bp">Systolic Blood Pressure (mmHg)</option>
+                <option value="respiratory_rate">Respiratory Rate (RPM)</option>
+                <option value="body_temperature">Core Body Temp (Fahrenheit x10, e.g. 986)</option>
+            </select>
+        </div>
+        <div class="form-group full">
+            <label>Observed Value</label>
+            <input type="number" name="metric_value" placeholder="Enter numerical reading" required>
+        </div>
+        <button type="submit" style="width: 100%;">Commit Clinical Log</button>
+    </form>
+</div>
+{% endblock %}

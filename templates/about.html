@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Application Specifications{% endblock %}
+{% block content %}
+<div class="card">
+    <h2 style="color:#1e3a8a; margin-top:0;">Application Specifications & Data Standards</h2>
+    <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">This distributed clinical pipeline architecture parses edge-node physiological observation telemetry. Built with high-throughput microservices, the gateway handles data conditioning and active triage management natively.</p>
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
+    <h3 style="font-size:16px;">Core Infrastructure Matrix</h3>
+    <ul style="line-height:2; font-size:14px; color:#334155;">
+        <li><strong>Ingestion Engine:</strong> FastAPI (Asynchronous Event Loop Routing Layer)</li>
+        <li><strong>Persistence Tier:</strong> Cloud PostgreSQL Distributed Relational Storage Cluster</li>
+        <li><strong>Data Validation Layer:</strong> Pydantic Strict Type Structural Verification</li>
+        <li><strong>Triage Matrix:</strong> Automated Physiological Modified Early Warning Score (MEWS) Processing Engine</li>
+    </ul>
+</div>
+{% endblock %}
